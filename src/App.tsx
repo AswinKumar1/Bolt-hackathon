@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from './hooks/useAuth';
-import { Header } from './components/layout/Header';
-import { Sidebar } from './components/layout/Sidebar';
-import { StudentDashboard } from './components/dashboard/StudentDashboard';
-import { EducatorDashboard } from './components/dashboard/EducatorDashboard';
+import { StudentSidebar } from './components/layout/StudentSidebar';
+import { EducatorSidebar } from './components/layout/EducatorSidebar';
+import StudentDashboard from './components/dashboard/student/StudentDashboard';
+import EducatorHome from './components/dashboard/educator/EducatorHome';
 import { LandingPage } from './components/landing/LandingPage';
 import { AuthModal } from './components/auth/AuthModal';
 import { SuggestedCourses } from './components/courses/SuggestedCourses';
@@ -13,11 +13,16 @@ import { Button } from './components/ui/Button';
 import { Card } from './components/ui/Card';
 import { ProgressBar } from './components/ui/ProgressBar';
 
+// Import both headers
+import { StudentHeader } from './components/layout/StudentHeader';
+import { EducatorHeader } from './components/layout/EducatorHeader';
+
 function App() {
   const { user, loading, login } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showLanding, setShowLanding] = useState(!user);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [darkMode, setDarkMode] = useState(false); // optional for EducatorHeader
 
   if (loading) {
     return (
@@ -30,8 +35,8 @@ function App() {
     );
   }
 
-  const handleAuth = async (email: string, password: string) => {
-    await login(email, password);
+  const handleAuth = async (role: 'student' | 'educator') => {
+    await login(role); // pass role only
     setShowLanding(false);
   };
 
@@ -64,7 +69,9 @@ function App() {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return user?.role === 'educator' ? <EducatorDashboard /> : <StudentDashboard />;
+        return user?.role === 'educator'
+          ? <EducatorHome activeTab={activeTab} />
+          : <StudentDashboard />;
       case 'suggested-courses':
         return <SuggestedCourses />;
       case 'settings':
@@ -129,10 +136,27 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className={`min-h-screen flex ${user?.role === 'educator' && darkMode ? 'bg-neutral-900' : 'bg-gray-50'}`}>
+      {user?.role === 'educator' ? (
+        <EducatorSidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          darkMode={darkMode} 
+        />
+      ) : (
+        <StudentSidebar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+        />
+      )}
       <div className="flex-1 flex flex-col">
-        <Header />
+        {/* Switch headers */}
+        {user?.role === 'educator' ? (
+          <EducatorHeader darkMode={darkMode} setDarkMode={setDarkMode} />
+        ) : (
+          <StudentHeader role={user?.role} />
+        )}
+
         <main className="flex-1 p-6">
           <AnimatePresence mode="wait">
             <motion.div

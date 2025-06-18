@@ -2,8 +2,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'educator' | 'admin';
   avatar?: string;
+  role: 'student' | 'educator';
 }
 
 export interface Course {

@@ -13,6 +13,7 @@ import {
   Compass,
   Star
 } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 interface SidebarProps {
@@ -20,7 +21,7 @@ interface SidebarProps {
   onTabChange: (tab: string) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
+export const StudentSidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
   const { user } = useAuth();
 
   const menuItems = {
@@ -34,11 +35,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
     ],
     educator: [
       { id: 'dashboard', label: 'Dashboard', icon: Home },
+      { id: 'courses', label: 'My Courses', icon: BookOpen },
       { id: 'students', label: 'Students', icon: Users },
       { id: 'revenue', label: 'Revenue', icon: BarChart3 },
-      { id: 'courses', label: 'My Courses', icon: BookOpen },
-      { id: 'messages', label: 'Messages', icon: MessageSquare },
-      { id: 'settings', label: 'Settings', icon: Settings }
+      { id: 'calendar', label: 'Calendar', icon: Calendar },
+      { id: 'settings', label: 'Settings', icon: Settings },
     ],
     admin: [
       { id: 'dashboard', label: 'Dashboard', icon: Home },

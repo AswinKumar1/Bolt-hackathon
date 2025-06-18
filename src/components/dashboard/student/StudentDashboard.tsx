@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, Target, TrendingUp, Award, Star, Compass, Play } from 'lucide-react';
-import { Card } from '../ui/Card';
-import { ProgressBar } from '../ui/ProgressBar';
-import { Button } from '../ui/Button';
+import { Card } from '../../ui/Card';
+import { ProgressBar } from '../../ui/ProgressBar';
+import { Button } from '../../ui/Button';
 
-export const StudentDashboard: React.FC = () => {
+const StudentDashboard: React.FC = () => {
   const courses = [
     {
       id: 1,
@@ -248,3 +248,5 @@ export const StudentDashboard: React.FC = () => {
     </div>
   );
 };
+
+export default StudentDashboard; 
